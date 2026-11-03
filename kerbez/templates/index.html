@@ -12,7 +12,7 @@
   <div class="wrap bar">
     <a class="brand" href="#top">{{ s.name }}</a>
     <nav><a href="#theme">Тақырып</a><a href="#stages">Кезеңдер</a><a href="#terms">Шарттар</a></nav>
-    <a class="btn small" href="{{ wa_link }}" target="_blank" rel="noopener">Тіркелу</a>
+    <a class="btn small" href="{{ url_for('apply') }}">Өтінім</a>
   </div>
 </header>
 <main id="top">
@@ -21,7 +21,7 @@
     <div>
       <h1>KERBEZ CRAFT<br>FASHION SHOW</h1>
       <p class="tag">{{ s.tagline }}</p>
-      <a class="btn" href="{{ wa_link }}" target="_blank" rel="noopener">Фестивальге тіркелу</a>
+      <a class="btn" href="{{ url_for('apply') }}">Өтінім қалдыру</a>
     </div>
     <svg class="tumar" viewBox="0 0 300 300" aria-hidden="true">
       <g fill="none" stroke="currentColor" stroke-width="2">
@@ -113,11 +113,11 @@
   <div class="wrap narrow center">
     <h2>{{ s.cta_title }}</h2>
     <p>{{ s.cta_text }}</p>
-    <a class="btn" href="{{ wa_link }}" target="_blank" rel="noopener">WhatsApp арқылы тіркелу</a>
+    <a class="btn" href="{{ url_for('apply') }}">Өтінім қалдыру</a>
     <p class="final">{{ s.cta_final }}</p>
   </div>
 </section>
 </main>
-<footer><div class="wrap center">{{ s.footer }}<br>Байланыс: {{ phone }}</div></footer>
+<footer><div class="wrap center">{{ s.footer }}<br>Байланыс: <a href="{{ wa_link }}" target="_blank" rel="noopener">WhatsApp {{ phone }}</a></div></footer>
 </body>
 </html>

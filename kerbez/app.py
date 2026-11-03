@@ -1,7 +1,33 @@
+import csv, io, os, re, sqlite3
+from datetime import datetime
+from functools import wraps
 from urllib.parse import quote
-from flask import Flask, render_template
+from flask import Flask, Response, redirect, render_template, request, url_for
 
 app = Flask(__name__)
+
+DB_PATH = os.environ.get("DB_PATH", os.path.join(os.path.dirname(__file__), "applications.db"))
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
+FORM_URL = os.environ.get("FORM_URL", "")  # Google Form сілтемесі (болса, өтінім батырмалары соған апарады)
+
+
+def db():
+    con = sqlite3.connect(DB_PATH)
+    con.row_factory = sqlite3.Row
+    con.execute("""CREATE TABLE IF NOT EXISTS applications(
+        id INTEGER PRIMARY KEY AUTOINCREMENT, created TEXT, full_name TEXT, faculty TEXT,
+        course TEXT, phone TEXT, kind TEXT, team TEXT, idea TEXT)""")
+    return con
+
+
+def admin_only(f):
+    @wraps(f)
+    def wrap(*args, **kw):
+        auth = request.authorization
+        if not ADMIN_PASSWORD or not auth or auth.password != ADMIN_PASSWORD:
+            return Response("Кіру үшін құпия сөз қажет", 401, {"WWW-Authenticate": 'Basic realm="Admin"'})
+        return f(*args, **kw)
+    return wrap
 
 PHONE_RAW = "77029033490"
 PHONE_VIEW = "+7 702 903 34 90"
@@ -86,6 +112,66 @@ SITE = {
 def index():
     wa_link = f"https://wa.me/{PHONE_RAW}?text={quote(WA_TEXT)}"
     return render_template("index.html", s=SITE, wa_link=wa_link, phone=PHONE_VIEW)
+
+
+@app.route("/apply", methods=["GET", "POST"])
+def apply():
+    if FORM_URL:
+        return redirect(FORM_URL)
+    form, errors = {}, {}
+    if request.method == "POST":
+        form = {k: request.form.get(k, "").strip() for k in
+                ("full_name", "faculty", "course", "phone", "kind", "team", "idea")}
+        if request.form.get("website"):  # honeypot
+            return redirect(url_for("thanks"))
+        if len(form["full_name"].split()) < 2:
+            errors["full_name"] = "Аты-жөніңізді толық жазыңыз (тегі мен аты)."
+        if len(form["faculty"]) < 2:
+            errors["faculty"] = "Факультетті жазыңыз."
+        if form["course"] not in {"1", "2", "3", "4", "5", "6"}:
+            errors["course"] = "Курсты таңдаңыз."
+        if len(re.sub(r"\D", "", form["phone"])) < 10:
+            errors["phone"] = "Телефон нөмірін дұрыс жазыңыз, мысалы +7 700 000 00 00."
+        if form["kind"] not in {"Жеке", "Топтық"}:
+            errors["kind"] = "Қатысу түрін таңдаңыз."
+        if form["kind"] == "Топтық" and not form["team"]:
+            errors["team"] = "Топ мүшелерінің аты-жөнін жазыңыз (өзіңізді қоспағанда 2 адамға дейін)."
+        if not request.form.get("agree"):
+            errors["agree"] = "Ережелермен келісетініңізді белгілеңіз."
+        if not errors:
+            con = db()
+            con.execute("INSERT INTO applications(created,full_name,faculty,course,phone,kind,team,idea) VALUES(?,?,?,?,?,?,?,?)",
+                        (datetime.now().strftime("%Y-%m-%d %H:%M"), form["full_name"], form["faculty"], form["course"],
+                         form["phone"], form["kind"], form["team"] if form["kind"] == "Топтық" else "", form["idea"]))
+            con.commit()
+            con.close()
+            return redirect(url_for("thanks"))
+    return render_template("apply.html", s=SITE, form=form, errors=errors, phone=PHONE_VIEW)
+
+
+@app.route("/thanks")
+def thanks():
+    wa_link = f"https://wa.me/{PHONE_RAW}?text={quote('Сәлеметсіз бе! Мен KERBEZ CRAFT FASHION SHOW фестиваліне өтінім қалдырдым.')}"
+    return render_template("thanks.html", s=SITE, wa_link=wa_link, phone=PHONE_VIEW)
+
+
+@app.route("/admin")
+@admin_only
+def admin():
+    rows = db().execute("SELECT * FROM applications ORDER BY id DESC").fetchall()
+    return render_template("admin.html", s=SITE, rows=rows)
+
+
+@app.route("/admin/export.csv")
+@admin_only
+def export():
+    rows = db().execute("SELECT * FROM applications ORDER BY id").fetchall()
+    buf = io.StringIO()
+    w = csv.writer(buf)
+    w.writerow(["№", "Күні", "Аты-жөні", "Факультет", "Курс", "Телефон", "Түрі", "Топ мүшелері", "Идея"])
+    w.writerows([list(r) for r in rows])
+    return Response("\ufeff" + buf.getvalue(), mimetype="text/csv",
+                    headers={"Content-Disposition": "attachment; filename=applications.csv"})
 
 
 if __name__ == "__main__":

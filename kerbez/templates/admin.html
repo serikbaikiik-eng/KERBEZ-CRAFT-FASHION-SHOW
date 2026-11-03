@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Өтінімдер · {{ s.title }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@400;600;800&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header><div class="wrap bar"><a class="brand" href="{{ url_for('index') }}">{{ s.name }}</a><a class="btn small" href="{{ url_for('index') }}">Басты бет</a></div></header>
+<main>
+<section class="formpage"><div class="wrap">
+  <h1 class="h1s">Өтінімдер: {{ rows|length }}</h1>
+  <p><a class="btn small" href="{{ url_for('export') }}">CSV жүктеу</a></p>
+  {% if rows %}<div class="tw"><table>
+    <tr><th>№</th><th>Күні</th><th>Аты-жөні</th><th>Факультет</th><th>Курс</th><th>Телефон</th><th>Түрі</th><th>Топ</th><th>Идея</th></tr>
+    {% for r in rows %}<tr><td>{{ r.id }}</td><td>{{ r.created }}</td><td>{{ r.full_name }}</td><td>{{ r.faculty }}</td><td>{{ r.course }}</td><td>{{ r.phone }}</td><td>{{ r.kind }}</td><td>{{ r.team }}</td><td>{{ r.idea }}</td></tr>{% endfor %}
+  </table></div>{% else %}<p>Әзірге өтінім жоқ.</p>{% endif %}
+</div></section>
+</main>
+<footer><div class="wrap center">{{ s.footer }}</div></footer>
+</body>
+</html>
