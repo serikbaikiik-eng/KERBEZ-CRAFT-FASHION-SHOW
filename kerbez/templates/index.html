@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ s.title }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@400;600;800&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top">{{ s.name }}</a>
+    <nav><a href="#theme">Тақырып</a><a href="#stages">Кезеңдер</a><a href="#terms">Шарттар</a></nav>
+    <a class="btn small" href="{{ wa_link }}" target="_blank" rel="noopener">Тіркелу</a>
+  </div>
+</header>
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>KERBEZ CRAFT<br>FASHION SHOW</h1>
+      <p class="tag">{{ s.tagline }}</p>
+      <a class="btn" href="{{ wa_link }}" target="_blank" rel="noopener">Фестивальге тіркелу</a>
+    </div>
+    <svg class="tumar" viewBox="0 0 300 300" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="150" cy="150" r="140"/><circle cx="150" cy="150" r="128" stroke-dasharray="2 7"/>
+        <path d="M150 40 L255 220 H45 Z" stroke-width="4"/><path d="M150 85 L222 208 H78 Z"/>
+        <path d="M150 128 L190 196 H110 Z"/><circle cx="150" cy="172" r="7" fill="currentColor"/>
+        <path d="M150 12v28M150 260v28M12 150h28M260 150h28" stroke-width="3"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap narrow">
+    <h2>Фестиваль туралы</h2>
+    {% for p in s.about %}<p>{{ p }}</p>{% endfor %}
+  </div>
+</section>
+
+<section class="alt" id="theme">
+  <div class="wrap narrow">
+    <h2>{{ s.theme_title }}</h2>
+    {% for p in s.theme %}<p>{{ p }}</p>{% endfor %}
+    <blockquote><b>Негізгі идея:</b> {{ s.idea }}</blockquote>
+  </div>
+</section>
+
+<section id="goals">
+  <div class="wrap">
+    <h2>Фестивальдің мақсаты</h2>
+    <ul class="goals">{% for g in s.goals %}<li>{{ g }}</li>{% endfor %}</ul>
+  </div>
+</section>
+
+<section class="alt" id="perks">
+  <div class="wrap">
+    <h2>Студенттерге берілетін мүмкіндіктер</h2>
+    <div class="perks">
+      {% for t, d in s.perks %}<article><span class="n">{{ loop.index }}</span><h3>{{ t }}</h3><p>{{ d }}</p></article>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="terms">
+  <div class="wrap narrow">
+    <h2>Қатысу шарттары</h2>
+    <ul class="goals">{% for c in s.conditions %}<li>{{ c }}</li>{% endfor %}</ul>
+  </div>
+</section>
+
+<section class="alt" id="stages">
+  <div class="wrap">
+    <h2>Байқау кезеңдері</h2>
+    <div class="stages">
+      {% for st in s.stages %}
+      <article class="stage">
+        <span class="roman">{{ st.tag }}</span>
+        <h3>{{ st.name }}</h3>
+        <p>{{ st.text }}</p>
+        <h4>{{ st.list_title }}</h4>
+        <ul>{% for i in st.list %}<li>{{ i }}</li>{% endfor %}</ul>
+      </article>
+      {% endfor %}
+    </div>
+    <div class="deadline">
+      <span>{{ s.deadline_label }}</span>
+      <strong>{{ s.deadline }}</strong>
+      <em>{{ s.deadline_words }}</em>
+    </div>
+  </div>
+</section>
+
+<section id="criteria">
+  <div class="wrap">
+    <div class="two">
+      <div>
+        <h2>Кімдер қатыса алады?</h2>
+        <ul class="goals">{% for w in s.who %}<li>{{ w }}</li>{% endfor %}</ul>
+      </div>
+      <div>
+        <h2>Бағалау критерийлері</h2>
+        <ul class="goals">{% for w in s.criteria %}<li>{{ w }}</li>{% endfor %}</ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap narrow center">
+    <h2>{{ s.cta_title }}</h2>
+    <p>{{ s.cta_text }}</p>
+    <a class="btn" href="{{ wa_link }}" target="_blank" rel="noopener">WhatsApp арқылы тіркелу</a>
+    <p class="final">{{ s.cta_final }}</p>
+  </div>
+</section>
+</main>
+<footer><div class="wrap center">{{ s.footer }}<br>Байланыс: {{ phone }}</div></footer>
+</body>
+</html>
