@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" role="img" aria-label="Томирис патшайымның стильдендірілген бейнесі">
+  <g fill="none" stroke="#D4AF5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M30 520V215A170 170 0 0 1 370 215V520" stroke-width="2.5"/>
+    <path d="M48 520V215A152 152 0 0 1 352 215V520" stroke-dasharray="2 8"/>
+    <!-- қос өрім -->
+    <path d="M155 212C138 270 146 335 160 392"/><path d="M148 215C128 275 134 340 148 400"/>
+    <path d="M245 212C262 270 254 335 240 392"/><path d="M252 215C272 275 266 340 252 400"/>
+    <!-- мойын -->
+    <path d="M184 305V352M216 305V352" fill="#2A1F12"/>
+    <!-- иық -->
+    <path d="M70 520C78 405 140 356 200 356C260 356 322 405 330 520Z" fill="#2A1F12" stroke-width="2.5"/>
+    <path d="M118 520C124 445 160 402 200 402C240 402 276 445 282 520" />
+    <!-- жүз -->
+    <ellipse cx="200" cy="252" rx="48" ry="62" fill="#3A2B18" stroke-width="2.5"/>
+    <path d="M170 238Q182 231 193 237M207 237Q218 231 230 238"/>
+    <path d="M172 250Q182 245 192 250Q182 255 172 250ZM208 250Q218 245 228 250Q218 255 208 250Z" fill="#D4AF5A"/>
+    <path d="M200 252V280Q195 285 202 285"/><path d="M188 297Q200 304 212 297" stroke-width="3"/>
+    <!-- сырға -->
+    <circle cx="150" cy="268" r="5" fill="#D4AF5A"/><path d="M150 273L143 296H157Z" fill="#D4AF5A"/>
+    <circle cx="250" cy="268" r="5" fill="#D4AF5A"/><path d="M250 273L243 296H257Z" fill="#D4AF5A"/>
+    <!-- сақ бас киімі -->
+    <path d="M200 44L262 198H138Z" fill="#2A1F12" stroke-width="3"/>
+    <path d="M200 44C190 28 204 16 198 4M200 44C210 30 228 24 232 10" stroke-width="2.5"/>
+    <path d="M200 84L236 178H164Z"/><path d="M200 124L214 160H186Z" fill="#D4AF5A"/>
+    <path d="M132 198H268V220H132Z" fill="#2A1F12" stroke-width="2.5"/>
+    <path d="M142 209l9-8 9 8-9 8zM162 209l9-8 9 8-9 8zM182 209l9-8 9 8-9 8zM202 209l9-8 9 8-9 8zM222 209l9-8 9 8-9 8zM242 209l9-8 9 8-9 8z"/>
+    <!-- алқа және тұмар -->
+    <path d="M150 360Q200 412 250 360" stroke-width="3"/>
+    <path d="M162 376l0 0M178 392l0 0M200 398l0 0M222 392l0 0M238 376l0 0" stroke-width="7"/>
+    <path d="M200 404L226 450H174Z" fill="#D4AF5A" stroke-width="2.5"/><path d="M200 422L212 442H188Z" fill="#2A1F12"/>
+    <!-- кеуде өрнегі -->
+    <path d="M110 490h180M110 504h180" stroke-dasharray="14 6"/>
+    <path d="M96 478l-10 12 10 12 10-12zM304 478l-10 12 10 12 10-12z" fill="#D4AF5A"/>
+  </g>
+</svg>

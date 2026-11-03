@@ -50,6 +50,12 @@
         <textarea id="idea" name="idea" rows="4" placeholder="«Тұмар рухы» тақырыбы бойынша қандай коллекция жасағыңыз келеді?">{{ form.idea }}</textarea>
         {% if errors.idea %}<small class="err">{{ errors.idea }}</small>{% endif %}
       </div>
+      <div class="field{% if errors.drive_link %} bad{% endif %}">
+        <label for="drive_link">Жұмысыңыздың Google Drive сілтемесі</label>
+        <input id="drive_link" name="drive_link" type="url" value="{{ form.drive_link }}" placeholder="https://drive.google.com/..." required>
+        <small class="hint">Эскиздер салынған папка немесе файл. Қолжетімділікті «Сілтемесі бар кез келген адам» деп ашып қойыңыз, әйтпесе жұмысты көре алмаймыз.</small>
+        {% if errors.drive_link %}<small class="err">{{ errors.drive_link }}</small>{% endif %}
+      </div>
       <div class="field{% if errors.agree %} bad{% endif %}">
         <label class="check"><input type="checkbox" name="agree" {{ 'checked' if request.form.get('agree') }}> Қатысу шарттарымен таныстым және келісемін</label>
         {% if errors.agree %}<small class="err">{{ errors.agree }}</small>{% endif %}

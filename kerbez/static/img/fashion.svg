@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 400" role="img" aria-label="Этностильдегі киім эскиздері">
+  <g fill="none" stroke="#D4AF5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 368H470" stroke-dasharray="3 7" opacity=".6"/>
+    <!-- 1: ұзын шапан-көйлек -->
+    <circle cx="80" cy="40" r="13"/><path d="M80 53V70M66 28Q80 16 94 28"/>
+    <path d="M80 70L55 85L42 200L28 360H132L118 200L105 85Z" fill="#2A1F12"/>
+    <path d="M55 85L38 190M105 85L122 190"/><path d="M80 85V360" stroke-dasharray="4 5"/>
+    <path d="M51 150H109" stroke-width="3"/><path d="M29 345H131M29 354H131"/>
+    <path d="M80 100L89 118H71Z" fill="#D4AF5A"/>
+    <!-- 2: тон + шалбар -->
+    <circle cx="240" cy="40" r="13"/><path d="M240 53V70M226 28Q240 16 254 28"/>
+    <path d="M240 70L212 84L206 205H274L268 84Z" fill="#2A1F12"/>
+    <path d="M212 84L196 190M268 84L284 190"/>
+    <path d="M206 192l10-10 10 10 10-10 10 10 10-10 10 10 8-8"/>
+    <path d="M210 205L205 362H235L240 220L245 362H275L270 205Z" fill="#2A1F12"/>
+    <path d="M240 98L249 116H231Z" fill="#D4AF5A"/><path d="M205 340H235M245 340H275"/>
+    <!-- 3: көйлек және жамылғы -->
+    <circle cx="400" cy="40" r="13"/><path d="M400 53V70M386 28Q400 16 414 28"/>
+    <path d="M400 70L385 84L378 180L360 362H440L422 180L415 84Z" fill="#2A1F12"/>
+    <path d="M385 84C340 120 335 250 328 335L378 285Z M415 84C460 120 465 250 472 335L422 285Z" fill="#3A2B18"/>
+    <path d="M400 84V362" stroke-dasharray="4 5"/><path d="M361 345H439M361 354H439"/>
+    <path d="M394 100l6-8 6 8-6 8zM394 124l6-8 6 8-6 8z" fill="#D4AF5A"/>
+  </g>
+</svg>

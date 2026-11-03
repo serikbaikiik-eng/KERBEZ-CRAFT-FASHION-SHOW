@@ -61,3 +61,175 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);border-col
 .hp{position:absolute;left:-9999px;width:1px;height:1px}
 .tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}th{background:var(--alt);color:var(--gold)}
 footer a{color:var(--gold)}
+
+.gallery{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:center}
+.gallery img{width:100%;height:auto;display:block}
+.gallery figure{margin:0}.gallery figcaption{margin-top:14px;color:var(--muted);font:italic 400 16px "Noto Serif Display",serif;text-align:center}
+.portrait{max-width:380px;margin:0 auto}.croquis{padding:24px;border:1px solid var(--line);background:var(--alt)}
+@media(max-width:760px){.gallery{grid-template-columns:1fr}}
+
+.arch{max-width:400px;margin-left:auto;filter:drop-shadow(0 0 36px rgba(212,175,90,.22))}.arch img{width:100%;height:auto;display:block}
+.band{height:28px;background:var(--bg) url("img/band.svg") repeat-x center;background-size:64px 28px;border-bottom:1px solid var(--line)}
+.gallery{grid-template-columns:1fr!important}.croquis{max-width:860px;margin:0 auto;width:100%}
+@media(max-width:760px){.arch{max-width:250px;margin:0 auto;order:-1}}
+
+/* ---- анимация ---- */
+.arch{position:relative}.arch svg{position:relative;width:100%;height:auto;display:block}
+.arch::before{content:"";position:absolute;inset:-5%;border:1px dashed rgba(212,175,90,.45);border-radius:50%;animation:spin 70s linear infinite}
+.drawing *{fill-opacity:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.hero h1{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.hero .tag{animation:rise .9s cubic-bezier(.2,.7,.2,1) .25s both}
+.hero .btn{animation:rise .9s cubic-bezier(.2,.7,.2,1) .5s both}
+html.js .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+html.js .reveal.in{opacity:1;transform:none}
+.band{animation:slide 16s linear infinite}@keyframes slide{to{background-position-x:calc(50% + 64px)}}
+.btn{position:relative;overflow:hidden}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s}
+.btn:hover::after{transform:translateX(120%)}
+.perks article,.stage{transition:transform .3s,border-color .3s}
+.perks article:hover,.stage:hover{transform:translateY(-6px);border-color:var(--gold)}
+.countdown{margin-top:14px;color:var(--muted)}.countdown b{font:800 28px "Noto Serif Display",serif;color:var(--gold)}
+@media(prefers-reduced-motion:reduce){.arch::before,.band,.hero h1,.hero .tag,.hero .btn{animation:none}.btn::after{display:none}}
+
+.hint{display:block;color:var(--muted);margin-top:6px;font-size:14px}
+input[type=url]{width:100%;background:var(--alt);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:14px 16px;font:inherit}
+
+.embed{border:1px solid var(--gold-d);background:#fff;border-radius:6px;overflow:hidden}.embed iframe{display:block;width:100%;height:max(900px,85vh);border:0}
+
+
+/* ---- телефон + қосымша әсемдік ---- */
+html{-webkit-text-size-adjust:100%}
+body{overflow-x:hidden}
+.snav{display:none}
+.fab{display:none}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:1px}
+.hero{position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;width:520px;height:520px;right:-140px;top:-120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,175,90,.18),transparent 65%);animation:glow 7s ease-in-out infinite alternate;pointer-events:none}
+@keyframes glow{to{transform:scale(1.25);opacity:.6}}
+.hero-grid{position:relative;z-index:1}
+.btn{animation:pulse 3s ease-in-out 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(212,175,90,.45)}50%{box-shadow:0 0 0 12px rgba(212,175,90,0)}}
+.goals li::before{transition:transform .4s}.goals li:hover::before{transform:rotate(225deg)}
+.reveal.in{will-change:auto}
+.perks article,.stage{border-radius:10px}
+.croquis{border-radius:10px}
+@media(max-width:760px){
+  body{font-size:16px;line-height:1.65}
+  .wrap{padding:0 18px}
+  .bar{height:56px}.brand{font-size:16px}
+  .snav{display:flex;gap:10px;overflow-x:auto;padding:10px 18px;background:var(--alt);border-bottom:1px solid var(--line);position:sticky;top:calc(56px + env(safe-area-inset-top,0px));z-index:9;scrollbar-width:none}
+  .snav::-webkit-scrollbar{display:none}
+  .snav a{white-space:nowrap;text-decoration:none;font-size:14px;color:var(--gold);border:1px solid var(--gold-d);border-radius:999px;padding:7px 16px}
+  .snav a:active{background:var(--gold);color:#1A1308}
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 112px)}
+  h1{font-size:clamp(34px,10.5vw,48px)}
+  .hero-grid{text-align:center;padding-top:28px;padding-bottom:44px;gap:20px}
+  .tag{margin:18px auto 28px;font-size:18px}
+  .hero .btn{display:block;width:100%;max-width:340px;margin:0 auto}
+  h2{margin-bottom:22px}h2::after{margin-top:12px}
+  section{padding:48px 0}
+  .perks,.stages{gap:16px}
+  .stage{padding:24px 20px}
+  .deadline{margin-top:28px}
+  .cta .btn{display:block;width:100%}
+  .btn{padding:18px 24px;text-align:center}
+  .btn.small{padding:10px 16px}
+  blockquote{padding:18px 18px;font-size:18px}
+  .two{gap:36px}
+  .croquis{padding:12px}
+  footer{padding:32px 0 96px}
+  .fab{display:block;position:fixed;left:16px;right:16px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:20;
+    background:var(--gold);color:#1A1308;text-align:center;text-decoration:none;font:600 16px/1 "Noto Sans",sans-serif;padding:18px;border-radius:12px;
+    box-shadow:0 8px 28px rgba(0,0,0,.55);transform:translateY(140%);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+  .fab.show{transform:none}
+  /* телефонда hover орнына басқанда әсер */
+  .perks article:hover,.stage:hover{transform:none}
+  .perks article:active,.stage:active{transform:scale(.98);border-color:var(--gold)}
+}
+@media(prefers-reduced-motion:reduce){.hero::before,.btn{animation:none}.fab{transition:none}}
+
+
+/* =====================================================
+   КОМПЬЮТЕР НҰСҚАСЫ (≥761px). Телефон стильдеріне тиіспейді
+   ===================================================== */
+.facts{display:none}
+@media(min-width:761px){
+  body{font-size:18px;counter-reset:sec}
+  .wrap{max-width:1180px;padding:0 40px}
+  .bar{height:72px}.brand{font-size:20px}
+  header{transition:background .3s}
+  header::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:calc(var(--p,0)*100%);background:linear-gradient(90deg,var(--gold-d),var(--gold))}
+  nav{gap:38px;font-size:15px;letter-spacing:.06em;text-transform:uppercase}
+  nav a{position:relative;padding:6px 0}
+  nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+  nav a:hover::after{transform:scaleX(1)}
+
+  /* hero */
+  .hero{display:flex;flex-direction:column;min-height:calc(100vh - 72px)}
+  .hero-grid{flex:1;grid-template-columns:1.15fr .85fr;gap:72px;padding-top:72px;padding-bottom:64px}
+  h1{font-size:clamp(54px,6.4vw,96px);line-height:1.02}
+  .tag{font-size:26px;margin:30px 0 44px;max-width:20em}
+  .arch{max-width:450px;transform:translate(var(--px,0px),var(--py,0px));transition:transform .5s ease-out}
+  .hero .btn{padding:20px 42px;font-size:17px}
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);position:relative;z-index:1;border-top:1px solid var(--gold-d);background:rgba(21,16,11,.7);backdrop-filter:blur(6px);max-width:none;margin:0;padding:0}
+  .facts div{padding:26px 40px;text-align:center;border-right:1px solid var(--line)}
+  .facts div:last-child{border:0}
+  .facts b{display:block;font:800 34px/1.1 "Noto Serif Display",serif;color:var(--gold)}
+  .facts span{display:block;margin-top:6px;color:var(--muted);font-size:14px;letter-spacing:.12em;text-transform:uppercase}
+
+  /* секция нөмірлері */
+  h2{counter-increment:sec;font-size:clamp(32px,3.4vw,46px)}
+  h2::before{content:counter(sec,decimal-leading-zero) " —";display:block;font:600 14px "Noto Sans",sans-serif;letter-spacing:.3em;color:var(--gold-d);margin-bottom:14px}
+  .cta h2::before{display:none}
+  section{padding:120px 0}
+  section.hero{padding:0}
+
+  /* сол жақта тақырып (қадалған), оң жақта мазмұн */
+  #about .wrap.narrow,#theme .wrap.narrow,#terms .wrap.narrow,#goals .wrap{max-width:1180px;display:grid;grid-template-columns:320px 1fr;column-gap:88px;align-items:start}
+  #about .wrap>h2,#theme .wrap>h2,#terms .wrap>h2,#goals .wrap>h2{grid-column:1;grid-row:1 / span 8;position:sticky;top:120px;margin:0}
+  #about .wrap>:not(h2),#theme .wrap>:not(h2),#terms .wrap>:not(h2),#goals .wrap>:not(h2){grid-column:2}
+  #about p,#theme p{font-size:19px}
+  #about p:first-of-type::first-letter{font:800 64px/.9 "Noto Serif Display",serif;color:var(--gold);float:left;padding:6px 14px 0 0}
+  blockquote{margin-top:12px;font-size:24px;padding:30px 34px;border-radius:0 10px 10px 0}
+  .goals{gap:20px}.goals li{font-size:19px;padding-left:40px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+  .goals li:last-child{border:0}
+
+  /* сурет */
+  .gallery figure.croquis{margin:0 auto}
+  .croquis{position:relative;padding:44px;max-width:980px;border-radius:0}
+  .croquis::before,.croquis::after{content:"";position:absolute;width:46px;height:46px;border:2px solid var(--gold)}
+  .croquis::before{left:-8px;top:-8px;border-right:0;border-bottom:0}
+  .croquis::after{right:-8px;bottom:-8px;border-left:0;border-top:0}
+
+  /* мүмкіндіктер: арка тәрізді карточкалар */
+  .perks{grid-template-columns:repeat(6,1fr);gap:28px}
+  .perks article:nth-child(-n+3){grid-column:span 2}
+  .perks article:nth-child(n+4){grid-column:span 3}
+  .perks article{text-align:center;border-radius:160px 160px 8px 8px;padding:64px 30px 36px;position:relative;background:linear-gradient(180deg,rgba(212,175,90,.07),transparent 60%),var(--bg)}
+  .perks article:nth-child(n+4){border-radius:240px 240px 8px 8px}
+  .perks .n{display:block;font-size:44px}
+  .perks .n::after{content:"";display:block;width:34px;height:2px;background:var(--gold);margin:14px auto 0}
+  .perks h3{font-size:22px}.perks p{font-size:16.5px}
+
+  /* кезеңдер */
+  .stages{grid-template-columns:repeat(2,1fr);gap:64px;position:relative;counter-reset:st}
+  .stages::before{content:"";position:absolute;left:calc(50% - 32px);width:64px;top:50%;height:2px;background:var(--gold-d)}
+  .stages::after{content:"";position:absolute;left:calc(50% - 8px);top:calc(50% - 7px);width:15px;height:15px;background:var(--gold);transform:rotate(45deg)}
+  .stage{counter-increment:st;position:relative;overflow:hidden;padding:44px 40px;border-radius:6px}
+  .stage::after{content:"0" counter(st);position:absolute;right:22px;top:-8px;font:800 130px/1 "Noto Serif Display",serif;color:rgba(212,175,90,.07);pointer-events:none}
+  .stage h3{font-size:26px}
+  .deadline{margin-top:64px;position:relative;padding:52px 12px;border:1px solid var(--gold-d);border-radius:6px;background:radial-gradient(ellipse at center,rgba(212,175,90,.1),transparent 70%)}
+  .deadline::before,.deadline::after{content:"";position:absolute;top:50%;width:11px;height:11px;background:var(--gold);transform:translateY(-50%) rotate(45deg)}
+  .deadline::before{left:-6px}.deadline::after{right:-6px}
+
+  .two{gap:96px}
+  .cta{background:radial-gradient(ellipse at 50% 0,rgba(212,175,90,.12),transparent 65%),var(--bg)}
+  .cta .btn{padding:20px 46px;font-size:17px}
+  .cta .final{font-size:28px}
+  .band{height:36px;background-size:84px 36px}
+  footer{padding:56px 0}
+  .formpage .wrap.narrow{max-width:760px}
+}

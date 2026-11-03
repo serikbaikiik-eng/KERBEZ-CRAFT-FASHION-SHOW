@@ -2,9 +2,11 @@
 <html lang="kk">
 <head>
 <meta charset="utf-8">
+<meta name="theme-color" content="#15100B">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{{ s.title }}</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@400;600;800&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -12,27 +14,27 @@
   <div class="wrap bar">
     <a class="brand" href="#top">{{ s.name }}</a>
     <nav><a href="#theme">Тақырып</a><a href="#stages">Кезеңдер</a><a href="#terms">Шарттар</a></nav>
-    <a class="btn small" href="{{ url_for('apply') }}">Өтінім</a>
+    <a class="btn small" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>Өтінім</a>
   </div>
 </header>
+<nav class="snav" aria-label="Бөлімдер"><a href="#theme">Тақырып</a><a href="#perks">Мүмкіндік</a><a href="#stages">Кезеңдер</a><a href="#terms">Шарттар</a></nav>
 <main id="top">
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <h1>KERBEZ CRAFT<br>FASHION SHOW</h1>
       <p class="tag">{{ s.tagline }}</p>
-      <a class="btn" href="{{ url_for('apply') }}">Өтінім қалдыру</a>
+      <a class="btn" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>Өтінім қалдыру</a>
     </div>
-    <svg class="tumar" viewBox="0 0 300 300" aria-hidden="true">
-      <g fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="150" cy="150" r="140"/><circle cx="150" cy="150" r="128" stroke-dasharray="2 7"/>
-        <path d="M150 40 L255 220 H45 Z" stroke-width="4"/><path d="M150 85 L222 208 H78 Z"/>
-        <path d="M150 128 L190 196 H110 Z"/><circle cx="150" cy="172" r="7" fill="currentColor"/>
-        <path d="M150 12v28M150 260v28M12 150h28M260 150h28" stroke-width="3"/>
-      </g>
-    </svg>
+    <div class="arch">{% include '_tomyris.svg' %}</div>
+  </div>
+  <div class="facts" aria-hidden="false">
+    <div><b>{{ s.stages|length }}</b><span>байқау кезеңі</span></div>
+    <div><b>3</b><span>адамға дейін топ</span></div>
+    <div><b>{{ s.deadline }}</b><span>{{ s.deadline_label }}</span></div>
   </div>
 </section>
+<div class="band" aria-hidden="true"></div>
 
 <section id="about">
   <div class="wrap narrow">
@@ -46,6 +48,14 @@
     <h2>{{ s.theme_title }}</h2>
     {% for p in s.theme %}<p>{{ p }}</p>{% endfor %}
     <blockquote><b>Негізгі идея:</b> {{ s.idea }}</blockquote>
+  </div>
+</section>
+
+<section id="image">
+  <div class="wrap">
+    <div class="gallery">
+      <figure class="croquis"><img src="{{ url_for('static', filename='img/fashion.svg') }}" alt="Этностильдегі киім эскиздері"><figcaption>Тұмар рухындағы этностиль эскиздері</figcaption></figure>
+    </div>
   </div>
 </section>
 
@@ -90,6 +100,7 @@
       <span>{{ s.deadline_label }}</span>
       <strong>{{ s.deadline }}</strong>
       <em>{{ s.deadline_words }}</em>
+      <div class="countdown"><b id="days" data-target="{{ s.deadline_iso }}">0</b> күн қалды</div>
     </div>
   </div>
 </section>
@@ -113,11 +124,14 @@
   <div class="wrap narrow center">
     <h2>{{ s.cta_title }}</h2>
     <p>{{ s.cta_text }}</p>
-    <a class="btn" href="{{ url_for('apply') }}">Өтінім қалдыру</a>
+    <a class="btn" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>Өтінім қалдыру</a>
     <p class="final">{{ s.cta_final }}</p>
   </div>
 </section>
+<div class="band" aria-hidden="true"></div>
 </main>
-<footer><div class="wrap center">{{ s.footer }}<br>Байланыс: <a href="{{ wa_link }}" target="_blank" rel="noopener">WhatsApp {{ phone }}</a></div></footer>
+<footer><div class="wrap center">{{ s.footer }}<br>Байланыс: {{ phone }}</div></footer>
+<a class="fab" id="fab" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>Өтінім қалдыру</a>
+<script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </body>
 </html>

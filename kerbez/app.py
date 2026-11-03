@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 DB_PATH = os.environ.get("DB_PATH", os.path.join(os.path.dirname(__file__), "applications.db"))
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
-FORM_URL = os.environ.get("FORM_URL", "")  # Google Form сілтемесі (болса, өтінім батырмалары соған апарады)
+FORM_URL = os.environ.get("FORM_URL", "https://docs.google.com/forms/d/e/1FAIpQLSeyfrwj2OZJPI-Ab31WmgB0vnpLHEoVW07fYXKAXLofgGlbJw/viewform")  # Google Form сілтемесі (болса, өтінім батырмалары соған апарады)
 
 
 def db():
@@ -17,6 +17,9 @@ def db():
     con.execute("""CREATE TABLE IF NOT EXISTS applications(
         id INTEGER PRIMARY KEY AUTOINCREMENT, created TEXT, full_name TEXT, faculty TEXT,
         course TEXT, phone TEXT, kind TEXT, team TEXT, idea TEXT)""")
+    cols = [r[1] for r in con.execute("PRAGMA table_info(applications)")]
+    if "drive_link" not in cols:
+        con.execute("ALTER TABLE applications ADD COLUMN drive_link TEXT")
     return con
 
 
@@ -31,11 +34,6 @@ def admin_only(f):
 
 PHONE_RAW = "77029033490"
 PHONE_VIEW = "+7 702 903 34 90"
-WA_TEXT = (
-    "Сәлеметсіз бе! KERBEZ CRAFT FASHION SHOW фестиваліне тіркелгім келеді.\n"
-    "Аты-жөні:\nФакультеті:\nКурсы:\nБайланыс нөмірі:\nҚатысу түрі (жеке/топтық):"
-)
-
 SITE = {
     "name": "KERBEZ CRAFT",
     "title": "KERBEZ CRAFT FASHION SHOW",
@@ -98,6 +96,7 @@ SITE = {
     ],
     "deadline_label": "II кезеңнің соңғы мерзімі",
     "deadline": "22.02.2027",
+    "deadline_iso": "2027-02-22",
     "deadline_words": "2027 жылғы 22 ақпан",
     "who": ["Университеттің барлық курс студенттері", "Жеке қатысушылар", "3 адамға дейінгі шығармашылық топтар"],
     "criteria": ["Тақырыпқа сәйкестік", "Идеяның ерекшелігі", "Шығармашылық шешім", "Орындалу сапасы"],
@@ -110,18 +109,18 @@ SITE = {
 
 @app.route("/")
 def index():
-    wa_link = f"https://wa.me/{PHONE_RAW}?text={quote(WA_TEXT)}"
-    return render_template("index.html", s=SITE, wa_link=wa_link, phone=PHONE_VIEW)
+    apply_url = FORM_URL or url_for("apply")
+    return render_template("index.html", s=SITE, phone=PHONE_VIEW, apply_url=apply_url, external=bool(FORM_URL))
 
 
 @app.route("/apply", methods=["GET", "POST"])
 def apply():
-    if FORM_URL:
+    if FORM_URL:  # Google Form-ға тікелей жібереміз
         return redirect(FORM_URL)
     form, errors = {}, {}
     if request.method == "POST":
         form = {k: request.form.get(k, "").strip() for k in
-                ("full_name", "faculty", "course", "phone", "kind", "team", "idea")}
+                ("full_name", "faculty", "course", "phone", "kind", "team", "idea", "drive_link")}
         if request.form.get("website"):  # honeypot
             return redirect(url_for("thanks"))
         if len(form["full_name"].split()) < 2:
@@ -136,13 +135,15 @@ def apply():
             errors["kind"] = "Қатысу түрін таңдаңыз."
         if form["kind"] == "Топтық" and not form["team"]:
             errors["team"] = "Топ мүшелерінің аты-жөнін жазыңыз (өзіңізді қоспағанда 2 адамға дейін)."
+        if not re.match(r"^https?://(drive|docs)\.google\.com/", form["drive_link"]):
+            errors["drive_link"] = "Google Drive сілтемесін жазыңыз (drive.google.com/... деп басталуы керек)."
         if not request.form.get("agree"):
             errors["agree"] = "Ережелермен келісетініңізді белгілеңіз."
         if not errors:
             con = db()
-            con.execute("INSERT INTO applications(created,full_name,faculty,course,phone,kind,team,idea) VALUES(?,?,?,?,?,?,?,?)",
+            con.execute("INSERT INTO applications(created,full_name,faculty,course,phone,kind,team,idea,drive_link) VALUES(?,?,?,?,?,?,?,?,?)",
                         (datetime.now().strftime("%Y-%m-%d %H:%M"), form["full_name"], form["faculty"], form["course"],
-                         form["phone"], form["kind"], form["team"] if form["kind"] == "Топтық" else "", form["idea"]))
+                         form["phone"], form["kind"], form["team"] if form["kind"] == "Топтық" else "", form["idea"], form["drive_link"]))
             con.commit()
             con.close()
             return redirect(url_for("thanks"))
@@ -151,8 +152,7 @@ def apply():
 
 @app.route("/thanks")
 def thanks():
-    wa_link = f"https://wa.me/{PHONE_RAW}?text={quote('Сәлеметсіз бе! Мен KERBEZ CRAFT FASHION SHOW фестиваліне өтінім қалдырдым.')}"
-    return render_template("thanks.html", s=SITE, wa_link=wa_link, phone=PHONE_VIEW)
+    return render_template("thanks.html", s=SITE, phone=PHONE_VIEW)
 
 
 @app.route("/admin")
@@ -168,7 +168,7 @@ def export():
     rows = db().execute("SELECT * FROM applications ORDER BY id").fetchall()
     buf = io.StringIO()
     w = csv.writer(buf)
-    w.writerow(["№", "Күні", "Аты-жөні", "Факультет", "Курс", "Телефон", "Түрі", "Топ мүшелері", "Идея"])
+    w.writerow(["№", "Күні", "Аты-жөні", "Факультет", "Курс", "Телефон", "Түрі", "Топ мүшелері", "Идея", "Drive сілтемесі"])
     w.writerows([list(r) for r in rows])
     return Response("\ufeff" + buf.getvalue(), mimetype="text/csv",
                     headers={"Content-Disposition": "attachment; filename=applications.csv"})
