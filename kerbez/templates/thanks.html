@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="kk">
+<html lang="{{ html_lang }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Рахмет · {{ s.title }}</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@400;600;800&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<title>{{ t.thanks_page }} · {{ s.title }}</title>
+{% include '_fonts.html' %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<header><div class="wrap bar"><a class="brand" href="{{ url_for('index') }}">{{ s.name }}</a><a class="btn small" href="{{ url_for('index') }}">Басты бет</a></div></header>
+<header><div class="wrap bar"><a class="brand" href="{{ url_for('index') }}">{{ s.name }}</a>{% include '_lang.html' %}<a class="btn small" href="{{ url_for('index') }}">{{ t.home }}</a></div></header>
 <main>
 <section class="formpage"><div class="wrap narrow center">
-  <h1 class="h1s">Өтініміңіз қабылданды</h1>
-  <p class="lead">Рахмет! Ұйымдастырушылар сізбен жақын арада көрсеткен нөміріңіз арқылы байланысады.</p>
-  <a class="btn" href="{{ url_for('index') }}">Басты бетке оралу</a>
+  <h1 class="h1s">{{ t.thanks_title }}</h1>
+  <p class="lead">{{ t.thanks_lead }}</p>
+  <a class="btn" href="{{ url_for('index') }}">{{ t.back_home }}</a>
 </div></section>
 </main>
 <footer><div class="wrap center">{{ s.footer }}</div></footer>
+<script src="{{ url_for('static', filename='lang.js') }}" defer></script>
 </body>
 </html>

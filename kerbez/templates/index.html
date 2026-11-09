@@ -1,90 +1,126 @@
 <!DOCTYPE html>
-<html lang="kk">
+<html lang="{{ html_lang }}">
 <head>
 <meta charset="utf-8">
 <meta name="theme-color" content="#15100B">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{{ s.title }}</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@400;600;800&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script>document.documentElement.classList.add('js')</script>
+<meta name="description" content="{{ s.description }}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ s.title }}">
+<meta property="og:description" content="{{ s.tagline }}">
+<meta property="og:image" content="{{ url_for('static', filename='img/poster.jpg', _external=True) }}">
+{% include '_fonts.html' %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 <header>
   <div class="wrap bar">
     <a class="brand" href="#top">{{ s.name }}</a>
-    <nav><a href="#theme">Тақырып</a><a href="#stages">Кезеңдер</a><a href="#terms">Шарттар</a></nav>
-    <a class="btn small" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>Өтінім</a>
+    <nav><a href="#theme">{{ t.nav_theme }}</a><a href="#stages">{{ t.nav_stages }}</a><a href="#terms">{{ t.nav_terms }}</a></nav>
+    {% include '_lang.html' %}
+    <a class="btn small" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>{{ t.apply }}</a>
   </div>
 </header>
-<nav class="snav" aria-label="Бөлімдер"><a href="#theme">Тақырып</a><a href="#perks">Мүмкіндік</a><a href="#stages">Кезеңдер</a><a href="#terms">Шарттар</a></nav>
+<nav class="snav" aria-label="{{ t.sections }}"><a href="#theme">{{ t.nav_theme }}</a><a href="#perks">{{ t.nav_perks }}</a><a href="#stages">{{ t.nav_stages }}</a><a href="#terms">{{ t.nav_terms }}</a></nav>
 <main id="top">
 <section class="hero">
+  <div class="hero-bg" aria-hidden="true"><i></i><i></i>{% if has_video %}<video class="hero-video" src="{{ url_for('static', filename='video/podium.mp4') }}" autoplay muted loop playsinline preload="metadata"></video>{% endif %}</div>
   <div class="wrap hero-grid">
     <div>
       <h1>KERBEZ CRAFT<br>FASHION SHOW</h1>
       <p class="tag">{{ s.tagline }}</p>
-      <a class="btn" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>Өтінім қалдыру</a>
+      <a class="btn" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>{{ t.apply_long }}</a>
     </div>
-    <div class="arch">{% include '_tomyris.svg' %}</div>
+    <div class="poster-wrap">
+      <button class="poster" type="button" aria-label="{{ t.poster_open }}">
+        <img src="{{ url_for('static', filename='img/poster-sm.jpg') }}"
+             srcset="{{ url_for('static', filename='img/poster-sm.jpg') }} 600w, {{ url_for('static', filename='img/poster.jpg') }} 900w"
+             sizes="(max-width:760px) 78vw, 400px" width="900" height="1600" alt="{{ t.poster_alt }}" fetchpriority="high">
+      </button>
+    </div>
   </div>
   <div class="facts" aria-hidden="false">
-    <div><b>{{ s.stages|length }}</b><span>байқау кезеңі</span></div>
-    <div><b>3</b><span>адамға дейін топ</span></div>
+    <div><b>{{ s.stages|length }}</b><span>{{ t.fact_stages }}</span></div>
+    <div><b>3</b><span>{{ t.fact_team }}</span></div>
     <div><b>{{ s.deadline }}</b><span>{{ s.deadline_label }}</span></div>
   </div>
 </section>
 <div class="band" aria-hidden="true"></div>
 
+<dialog id="lightbox" aria-label="{{ t.poster_alt }}">
+  <button class="x" type="button" aria-label="{{ t.close }}">&times;</button>
+  <img src="{{ url_for('static', filename='img/poster.jpg') }}" alt="{{ t.poster_alt }}" loading="lazy">
+</dialog>
+
 <section id="about">
   <div class="wrap narrow">
-    <h2>Фестиваль туралы</h2>
+    <h2>{{ t.about_h }}</h2>
     {% for p in s.about %}<p>{{ p }}</p>{% endfor %}
   </div>
 </section>
 
 <section class="alt" id="theme">
-  <div class="wrap narrow">
-    <h2>{{ s.theme_title }}</h2>
+  <div class="wrap narrow theme">
+    <h2 class="theme-h">
+      <span class="th-year">{{ s.theme_year }}</span>
+      {% if s.theme_year_word %}<span class="th-word">{{ s.theme_year_word }}</span>{% endif %}
+      <span class="th-name">{{ s.theme_name }}</span>
+      {% if s.theme_sub %}<span class="th-sub" lang="kk">{{ s.theme_sub }}</span>{% endif %}
+    </h2>
     {% for p in s.theme %}<p>{{ p }}</p>{% endfor %}
-    <blockquote><b>Негізгі идея:</b> {{ s.idea }}</blockquote>
+    <blockquote><b>{{ t.idea_label }}</b> {{ s.idea }}</blockquote>
   </div>
 </section>
 
 <section id="image">
   <div class="wrap">
     <div class="gallery">
-      <figure class="croquis"><img src="{{ url_for('static', filename='img/fashion.svg') }}" alt="Этностильдегі киім эскиздері"><figcaption>Тұмар рухындағы этностиль эскиздері</figcaption></figure>
+      <div class="croquis">
+        <div class="slider" role="region" aria-roledescription="carousel" aria-label="{{ t.croquis_alt }}">
+          <div class="slides" tabindex="0">
+            {% for src in ['fashion.svg','fashion-2.svg','fashion-3.svg'] %}
+            <figure class="slide" role="group" aria-roledescription="slide" aria-label="{{ t.slide_n.format(n=loop.index) }}">
+              <img src="{{ url_for('static', filename='img/' ~ src) }}" alt="{{ t.slide_caps[loop.index0] }}" width="480" height="400"{% if not loop.first %} loading="lazy"{% endif %}>
+              <figcaption>{{ t.slide_caps[loop.index0] }}</figcaption>
+            </figure>
+            {% endfor %}
+          </div>
+          <button class="nav prev" type="button" aria-label="{{ t.prev }}">&#8249;</button>
+          <button class="nav next" type="button" aria-label="{{ t.next }}">&#8250;</button>
+        </div>
+        <div class="dots">{% for i in range(3) %}<button type="button" aria-label="{{ t.slide_n.format(n=i+1) }}"{% if i==0 %} aria-current="true"{% endif %}></button>{% endfor %}</div>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="goals">
   <div class="wrap">
-    <h2>Фестивальдің мақсаты</h2>
-    <ul class="goals">{% for g in s.goals %}<li>{{ g }}</li>{% endfor %}</ul>
+    <h2>{{ t.goals_h }}</h2>
+    <ul class="goals">{% for goal in s.goals %}<li>{{ goal }}</li>{% endfor %}</ul>
   </div>
 </section>
 
 <section class="alt" id="perks">
   <div class="wrap">
-    <h2>Студенттерге берілетін мүмкіндіктер</h2>
+    <h2>{{ t.perks_h }}</h2>
     <div class="perks">
-      {% for t, d in s.perks %}<article><span class="n">{{ loop.index }}</span><h3>{{ t }}</h3><p>{{ d }}</p></article>{% endfor %}
+      {% for title, d in s.perks %}<article><span class="n">{{ loop.index }}</span><h3>{{ title }}</h3><p>{{ d }}</p></article>{% endfor %}
     </div>
   </div>
 </section>
 
 <section id="terms">
   <div class="wrap narrow">
-    <h2>Қатысу шарттары</h2>
+    <h2>{{ t.terms_h }}</h2>
     <ul class="goals">{% for c in s.conditions %}<li>{{ c }}</li>{% endfor %}</ul>
   </div>
 </section>
 
 <section class="alt" id="stages">
   <div class="wrap">
-    <h2>Байқау кезеңдері</h2>
+    <h2>{{ t.stages_h }}</h2>
     <div class="stages">
       {% for st in s.stages %}
       <article class="stage">
@@ -100,7 +136,7 @@
       <span>{{ s.deadline_label }}</span>
       <strong>{{ s.deadline }}</strong>
       <em>{{ s.deadline_words }}</em>
-      <div class="countdown"><b id="days" data-target="{{ s.deadline_iso }}">0</b> күн қалды</div>
+      <div class="countdown"><b id="days" data-target="{{ s.deadline_iso }}" data-expired="{{ t.expired }}">0</b> {{ t.days_left }}</div>
     </div>
   </div>
 </section>
@@ -109,11 +145,11 @@
   <div class="wrap">
     <div class="two">
       <div>
-        <h2>Кімдер қатыса алады?</h2>
+        <h2>{{ t.who_h }}</h2>
         <ul class="goals">{% for w in s.who %}<li>{{ w }}</li>{% endfor %}</ul>
       </div>
       <div>
-        <h2>Бағалау критерийлері</h2>
+        <h2>{{ t.criteria_h }}</h2>
         <ul class="goals">{% for w in s.criteria %}<li>{{ w }}</li>{% endfor %}</ul>
       </div>
     </div>
@@ -124,14 +160,15 @@
   <div class="wrap narrow center">
     <h2>{{ s.cta_title }}</h2>
     <p>{{ s.cta_text }}</p>
-    <a class="btn" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>Өтінім қалдыру</a>
+    <a class="btn" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>{{ t.apply_long }}</a>
     <p class="final">{{ s.cta_final }}</p>
   </div>
 </section>
 <div class="band" aria-hidden="true"></div>
 </main>
-<footer><div class="wrap center">{{ s.footer }}<br>Байланыс: {{ phone }}</div></footer>
-<a class="fab" id="fab" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>Өтінім қалдыру</a>
+<footer><div class="wrap center">{{ s.footer }}<br>{{ t.contact }}: {{ phone }}</div></footer>
+<a class="fab" id="fab" href="{{ apply_url }}"{% if external %} target="_blank" rel="noopener"{% endif %}>{{ t.apply_long }}</a>
+<script src="{{ url_for('static', filename='lang.js') }}" defer></script>
 <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </body>
 </html>

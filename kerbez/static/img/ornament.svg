@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <g fill="none" stroke="#D4AF5A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 62C42 62 30 52 31 38C32 25 48 22 52 33C55 41 46 46 41 41"/><path d="M60 62C42 62 30 52 31 38C32 25 48 22 52 33C55 41 46 46 41 41" transform="matrix(-1 0 0 1 120 0)"/>
+    <path d="M60 62C42 62 30 72 31 86C32 99 48 102 52 91C55 83 46 78 41 83" />
+    <path d="M60 62C42 62 30 72 31 86C32 99 48 102 52 91C55 83 46 78 41 83" transform="matrix(-1 0 0 1 120 0)"/>
+    <path d="M60 50L66 62L60 74L54 62Z"/>
+    <path d="M0 0L6 6L0 12M120 0L114 6L120 12M0 120L6 114L0 108M120 120L114 114L120 108"/>
+  </g>
+</svg>

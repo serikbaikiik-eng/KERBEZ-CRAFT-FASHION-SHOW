@@ -1,66 +1,66 @@
 <!DOCTYPE html>
-<html lang="kk">
+<html lang="{{ html_lang }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Өтінім · {{ s.title }}</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@400;600;800&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<title>{{ t.apply }} · {{ s.title }}</title>
+{% include '_fonts.html' %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<header><div class="wrap bar"><a class="brand" href="{{ url_for('index') }}">{{ s.name }}</a><a class="btn small" href="{{ url_for('index') }}">Басты бет</a></div></header>
+<header><div class="wrap bar"><a class="brand" href="{{ url_for('index') }}">{{ s.name }}</a>{% include '_lang.html' %}<a class="btn small" href="{{ url_for('index') }}">{{ t.home }}</a></div></header>
 <main>
 <section class="formpage"><div class="wrap narrow">
-  <h1 class="h1s">Өтінім қалдыру</h1>
-  <p class="lead">Фестивальге қатысу үшін форманы толтырыңыз. Біз сізбен көрсетілген нөмір арқылы байланысамыз.</p>
+  <h1 class="h1s">{{ t.apply_title }}</h1>
+  <p class="lead">{{ t.apply_lead }}</p>
   <form method="post" novalidate>
     <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div class="field{% if errors.full_name %} bad{% endif %}">
-        <label for="full_name">Аты-жөні</label>
-        <input id="full_name" name="full_name" value="{{ form.full_name }}" placeholder="Тегі Аты" autocomplete="name" required>
+        <label for="full_name">{{ t.f_name }}</label>
+        <input id="full_name" name="full_name" value="{{ form.full_name }}" placeholder="{{ t.ph_name }}" autocomplete="name" required>
         {% if errors.full_name %}<small class="err">{{ errors.full_name }}</small>{% endif %}
       </div>
       <div class="field{% if errors.faculty %} bad{% endif %}">
-        <label for="faculty">Факультеті</label>
+        <label for="faculty">{{ t.f_faculty }}</label>
         <input id="faculty" name="faculty" value="{{ form.faculty }}" required>
         {% if errors.faculty %}<small class="err">{{ errors.faculty }}</small>{% endif %}
       </div>
       <div class="field{% if errors.course %} bad{% endif %}">
-        <label for="course">Курсы</label>
-        <select id="course" name="course" required><option value="">Таңдаңыз</option>{% for n in range(1,7) %}<option value="{{ n }}" {{ 'selected' if form.course == n|string }}>{{ n }} курс</option>{% endfor %}</select>
+        <label for="course">{{ t.f_course }}</label>
+        <select id="course" name="course" required><option value="">{{ t.choose }}</option>{% for n in range(1,7) %}<option value="{{ n }}" {{ 'selected' if form.course == n|string }}>{{ t.course_n.format(n=n) }}</option>{% endfor %}</select>
         {% if errors.course %}<small class="err">{{ errors.course }}</small>{% endif %}
       </div>
       <div class="field{% if errors.phone %} bad{% endif %}">
-        <label for="phone">Байланыс нөмірі</label>
+        <label for="phone">{{ t.f_phone }}</label>
         <input id="phone" name="phone" type="tel" value="{{ form.phone }}" placeholder="+7 700 000 00 00" autocomplete="tel" required>
         {% if errors.phone %}<small class="err">{{ errors.phone }}</small>{% endif %}
       </div>
       <div class="field{% if errors.kind %} bad{% endif %}">
-        <label for="kind">Қатысу түрі</label>
-        <div class="radios"><label><input type="radio" name="kind" value="Жеке" {{ 'checked' if form.kind == 'Жеке' }}> Жеке</label><label><input type="radio" name="kind" value="Топтық" {{ 'checked' if form.kind == 'Топтық' }}> Топтық (3 адамға дейін)</label></div>
+        <label for="kind">{{ t.f_kind }}</label>
+        <div class="radios"><label><input type="radio" name="kind" value="Жеке" {{ 'checked' if form.kind == 'Жеке' }}> {{ t.k_solo }}</label><label><input type="radio" name="kind" value="Топтық" {{ 'checked' if form.kind == 'Топтық' }}> {{ t.k_team }}</label></div>
         {% if errors.kind %}<small class="err">{{ errors.kind }}</small>{% endif %}
       </div>
       <div class="field{% if errors.team %} bad{% endif %}" id="teamBox">
-        <label for="team">Топ мүшелері</label>
-        <textarea id="team" name="team" rows="3" placeholder="Әр жолға бір адамнан: аты-жөні">{{ form.team }}</textarea>
+        <label for="team">{{ t.f_team }}</label>
+        <textarea id="team" name="team" rows="3" placeholder="{{ t.ph_team }}">{{ form.team }}</textarea>
         {% if errors.team %}<small class="err">{{ errors.team }}</small>{% endif %}
       </div>
       <div class="field{% if errors.idea %} bad{% endif %}">
-        <label for="idea">Қысқаша идеяңыз (міндетті емес)</label>
-        <textarea id="idea" name="idea" rows="4" placeholder="«Тұмар рухы» тақырыбы бойынша қандай коллекция жасағыңыз келеді?">{{ form.idea }}</textarea>
+        <label for="idea">{{ t.f_idea }}</label>
+        <textarea id="idea" name="idea" rows="4" placeholder="{{ t.ph_idea }}">{{ form.idea }}</textarea>
         {% if errors.idea %}<small class="err">{{ errors.idea }}</small>{% endif %}
       </div>
       <div class="field{% if errors.drive_link %} bad{% endif %}">
-        <label for="drive_link">Жұмысыңыздың Google Drive сілтемесі</label>
+        <label for="drive_link">{{ t.f_drive }}</label>
         <input id="drive_link" name="drive_link" type="url" value="{{ form.drive_link }}" placeholder="https://drive.google.com/..." required>
-        <small class="hint">Эскиздер салынған папка немесе файл. Қолжетімділікті «Сілтемесі бар кез келген адам» деп ашып қойыңыз, әйтпесе жұмысты көре алмаймыз.</small>
+        <small class="hint">{{ t.drive_hint }}</small>
         {% if errors.drive_link %}<small class="err">{{ errors.drive_link }}</small>{% endif %}
       </div>
       <div class="field{% if errors.agree %} bad{% endif %}">
-        <label class="check"><input type="checkbox" name="agree" {{ 'checked' if request.form.get('agree') }}> Қатысу шарттарымен таныстым және келісемін</label>
+        <label class="check"><input type="checkbox" name="agree" {{ 'checked' if request.form.get('agree') }}> {{ t.agree }}</label>
         {% if errors.agree %}<small class="err">{{ errors.agree }}</small>{% endif %}
       </div>
-    <button class="btn" type="submit">Өтінімді жіберу</button>
+    <button class="btn" type="submit">{{ t.submit }}</button>
   </form>
 </div></section>
 <script>
@@ -72,5 +72,6 @@
 </script>
 </main>
 <footer><div class="wrap center">{{ s.footer }}</div></footer>
+<script src="{{ url_for('static', filename='lang.js') }}" defer></script>
 </body>
 </html>

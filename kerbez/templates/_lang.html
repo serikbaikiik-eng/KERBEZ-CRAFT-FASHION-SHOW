@@ -1,0 +1,1 @@
+<div class="lang" role="group" aria-label="{{ t.language }}">{% for code, label in langs.items() %}<a href="{{ url_for(request.endpoint, lang=code) }}" hreflang="{{ code }}" lang="{{ code }}"{% if code == lang %} aria-current="true"{% endif %}>{{ label }}</a>{% endfor %}</div>
